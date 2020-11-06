@@ -21,10 +21,14 @@ resource "aws_instance" "web" {
   instance_type = "t3.micro"
   subnet_id = aws_subnet.i_public.id
 
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash" ,"-c"]
-    command = "sudo apt-get update; sudo apt-get install apache2;"
-  }
+  user_data     = <<-EOF
+                  #!/bin/sh
+                  apt-get update
+                  apt-get install -y apache2
+                  service start apache2
+                  chkonfig apache2 on
+                  echo "<html><h1>Welcome to Aapache Web Server</h2></html>" > /var/www/html/index.html
+                  EOF
 
   tags = {
     Name = "HelloWorld"
