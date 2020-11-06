@@ -1,29 +1,29 @@
 
-data "aws_ami" "amazon-linux" {
+data "aws_ami" "ubuntu" {
   most_recent = true
-
-
-  filter {
-    name   = "owner-alias"
-    values = ["amazon"]
-  }
-
 
   filter {
     name   = "name"
-    values = ["amzn-ami-hvm*"]
+    values = ["amazon/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
-  owners = ["amazon"]
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
 }
 
 
 resource "aws_instance" "web" {
-  ami           = "ami-0528a5175983e7f28"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
   subnet_id = aws_subnet.i_public.id
 
   provisioner "local-exec" {
-    command = "yum update -y; yum install httpd -y; chkconfig httpd on; service httpd start; echo \"<h1>Testy</h1>\" > /var/www/html/index.html"
+    interpreter = ["/bin/bash" ,"-c"]
+    command = "apt-get update; apt-get install apache2;"
   }
 
   tags = {
