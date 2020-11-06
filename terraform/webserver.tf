@@ -1,5 +1,5 @@
 
-data "aws_ami" "amazon-linux-2" {
+data "aws_ami" "amazon-linux" {
   most_recent = true
 
 
@@ -11,19 +11,19 @@ data "aws_ami" "amazon-linux-2" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm*"]
+    values = ["amzn-ami-hvm*"]
   }
   owners = ["amazon"]
 }
 
 
 resource "aws_instance" "web" {
-  ami           = data.aws_ami.amazon-linux-2.id
+  ami           = data.aws_ami.amazon-linux.id
   instance_type = "t3.micro"
   subnet_id = aws_subnet.i_public.id
 
   provisioner "local-exec" {
-    command = "yum update -y; yum install httpd -y; sudo -s; y; chkconfig httpd on; service httpd start; echo \"<h1>Testy</h1>\" > /var/www/html/index.html"
+    command = "yum update -y; yum install httpd -y; chkconfig httpd on; service httpd start; echo \"<h1>Testy</h1>\" > /var/www/html/index.html"
   }
 
   tags = {
