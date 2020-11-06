@@ -21,7 +21,7 @@ resource "aws_instance" "web" {
   subnet_id = aws_subnet.i_public.id
 
   local-exec {
-    interpreter = ["/bin/bash" ,"-c"],
+    interpreter = ["/bin/bash" ,"-c"]
     command = <<-EOT
     exec "yum install httpd php php-mysql -y"
     exec "yum update -y"
