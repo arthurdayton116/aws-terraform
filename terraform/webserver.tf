@@ -19,15 +19,19 @@ resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
   subnet_id = aws_subnet.i_public.id
-  provisioner "remote-exec" {
-    inline = [
-      "yum install httpd php php-mysql -y",
-      "yum update -y",
-      "chkconfig httpd on",
-      "service httpd start",
-      "echo \"<?php phpinfo(); ?>\" > /var/www/html/index.php"
-    ]
+
+  provisioner
+  local-exec {
+    interpreter = ["/bin/bash" ,"-c"],
+    command = <<-EOT
+    exec "yum install httpd php php-mysql -y"
+    exec "yum update -y"
+    exec "chkconfig httpd on"
+    exec "service httpd start"
+    exec "echo \"<?php phpinfo(); ?>\" > /var/www/html/index.php"
+  EOT
   }
+
   tags = {
     Name = "HelloWorld"
   }
