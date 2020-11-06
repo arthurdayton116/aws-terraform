@@ -20,16 +20,15 @@ resource "aws_instance" "web" {
   instance_type = "t3.micro"
   subnet_id = aws_subnet.i_public.id
 
-  provisioner
   local-exec {
     interpreter = ["/bin/bash" ,"-c"],
-    command = "<<-EOT
+    command = <<-EOT
     exec "yum install httpd php php-mysql -y"
     exec "yum update -y"
     exec "chkconfig httpd on"
     exec "service httpd start"
     exec "echo \"<?php phpinfo(); ?>\" > /var/www/html/index.php"
-  EOT"
+  EOT
   }
 
   tags = {
