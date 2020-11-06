@@ -23,7 +23,7 @@ resource "aws_instance" "web" {
 
   provisioner "local-exec" {
     interpreter = ["/bin/bash" ,"-c"]
-    command = "apt-get update; apt-get install apache2;"
+    command = "sudo apt-get update; sudo apt-get install apache2;"
   }
 
   tags = {
