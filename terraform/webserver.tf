@@ -18,7 +18,7 @@ data "aws_ami" "amazon-linux" {
 
 
 resource "aws_instance" "web" {
-  ami           = data.aws_ami.amazon-linux.id
+  ami           = "ami-0528a5175983e7f28"
   instance_type = "t3.micro"
   subnet_id = aws_subnet.i_public.id
 
