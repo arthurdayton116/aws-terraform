@@ -22,13 +22,7 @@ resource "aws_instance" "web" {
 
   provisioner "local-exec" {
     interpreter = ["/bin/bash" ,"-c"]
-    command = <<-EOT
-    exec "yum install httpd php php-mysql -y"
-    exec "yum update -y"
-    exec "chkconfig httpd on"
-    exec "service httpd start"
-    exec "echo \"<?php phpinfo(); ?>\" > /var/www/html/index.php"
-  EOT
+    command = "yum install httpd php php-mysql -y; yum update -y; chkconfig httpd on; service httpd start; echo \"<?php phpinfo(); ?>\" > /var/www/html/index.php"
   }
 
   tags = {
