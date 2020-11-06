@@ -23,7 +23,7 @@ resource "aws_instance" "web" {
   subnet_id = aws_subnet.i_public.id
 
   provisioner "local-exec" {
-    command = "sudo -s; yum update -y; yum install httpd -y; chkconfig httpd on; service httpd start; echo \"<h1>Testy</h1>\" > /var/www/html/index.html"
+    command = "yum update -y; yum install httpd -y; sudo -s; y; chkconfig httpd on; service httpd start; echo \"<h1>Testy</h1>\" > /var/www/html/index.html"
   }
 
   tags = {
