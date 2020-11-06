@@ -20,7 +20,7 @@ resource "aws_instance" "web" {
   instance_type = "t3.micro"
   subnet_id = aws_subnet.i_public.id
 
-  local-exec {
+  provisioner "local-exec" {
     interpreter = ["/bin/bash" ,"-c"]
     command = <<-EOT
     exec "yum install httpd php php-mysql -y"
