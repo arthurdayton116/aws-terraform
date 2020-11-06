@@ -9,7 +9,7 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-west-1"
+  region = "us-west-2"
 }
 
 resource "aws_vpc" "main" {
@@ -19,6 +19,6 @@ resource "aws_vpc" "main" {
   
 
   tags = {
-    Name = "main"
+    Name = "sample-company-vpc"
   }
 }
