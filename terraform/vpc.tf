@@ -1,50 +1,66 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.0"
-    }
-  }
-}
+
 
 # Configure the AWS Provider
 provider "aws" {
   region = "us-west-2"
+
 }
 
-resource "aws_vpc" "main" {
-  cidr_block       = "10.0.0.0/16"
-  instance_tenancy = "default"
-  enable_dns_support = true
-  
+## Create vpc
+resource "aws_vpc" "vpc" {
+  cidr_block           = "${var.cidr_vpc}"
+  instance_tenancy     = "default"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
 
   tags = {
-    Name = "sample-company-vpc"
+    Name = "${var.resource_prefix}-vpc"
   }
 }
 
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id
+## Create internet gateway
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.vpc.id
+  tags = {
+    Name = "${var.resource_prefix}-igw"
+  }
 }
 
-resource "aws_subnet" "i_private" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.3.0/24"
-  map_public_ip_on_launch = false
-  availability_zone = "us-west-2a"
+## Create public subnet
+resource "aws_subnet" "subnet_public" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.cidr_subnet
+  map_public_ip_on_launch = "true"
+  availability_zone       = var.availability_zone
   tags = {
-    Name = "sample-company-vpc-subnet-private"
+    Name   = "${var.resource_prefix}-vpc-subnet-public"
+    Access = "public"
+  }
+}
+
+## Create private subnet
+resource "aws_subnet" "subnet_private" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.cidr_subnet
+  map_public_ip_on_launch = "false"
+  availability_zone       = var.availability_zone
+  tags = {
+    Name   = "${var.resource_prefix}-vpc-subnet-private"
     Access = "private"
   }
 }
 
-resource "aws_subnet" "i_public" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.2.0/24"
-  map_public_ip_on_launch = true
-  availability_zone = "us-west-2a"
-  tags = {
-    Name = "sample-company-vpc-subnet-public"
-    Access = "public"
+## Create route table
+resource "aws_route_table" "rtb_public" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
   }
+}
+
+## Associate with subnet
+resource "aws_route_table_association" "rta_subnet_public" {
+  subnet_id      = aws_subnet.subnet_public.id
+  route_table_id = aws_route_table.rtb_public.id
 }

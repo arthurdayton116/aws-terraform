@@ -1,36 +1,20 @@
+/* Locally generated public key*/
+resource "aws_key_pair" "ec2key" {
+  key_name   = "${var.resource_prefix}_publicKey"
+  public_key = file(var.public_key_path)
+}
 
-//data "aws_ami" "ubuntu" {
-//  most_recent = true
-//
-//  filter {
-//    name   = "name"
-//    values = ["amazon/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-//  }
-//
-//  filter {
-//    name   = "virtualization-type"
-//    values = ["hvm"]
-//  }
-//
-//  owners = ["amazon"] # Canonical
-//}
-
-
+/*EC2 instance with web server*/
 resource "aws_instance" "web" {
-  ami           = "ami-07a29e5e945228fa1"
-  instance_type = "t3.micro"
-  subnet_id = aws_subnet.i_public.id
+  ami                    = var.ami_id
+  instance_type          = var.ami_instance_type
+  subnet_id              = aws_subnet.subnet_public.id
+  vpc_security_group_ids = [aws_security_group.ec2.id]
+  key_name               = aws_key_pair.ec2key.key_name
 
-  user_data     = <<-EOF
-                  #!/bin/sh
-                  apt-get update
-                  apt-get install -y apache2
-                  service start apache2
-                  chkonfig apache2 on
-                  echo "<html><h1>Welcome to Aapache Web Server</h2></html>" > /var/www/html/index.html
-                  EOF
+  user_data = var.user_data
 
   tags = {
-    Name = "HelloWorld"
+    Name = "${var.resource_prefix}_ec2"
   }
 }
