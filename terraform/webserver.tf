@@ -15,6 +15,20 @@ resource "aws_instance" "web" {
   user_data = var.user_data
 
   tags = {
-    Name = "${var.resource_prefix}_ec2"
+    Name = "${var.resource_prefix}_ec2_public"
+  }
+}
+
+resource "aws_instance" "web2" {
+  ami                    = var.ami_id
+  instance_type          = var.ami_instance_type
+  subnet_id              = aws_subnet.subnet_private.id
+  vpc_security_group_ids = [aws_security_group.ec2.id]
+  key_name               = aws_key_pair.ec2key.key_name
+
+  user_data = var.user_data
+
+  tags = {
+    Name = "${var.resource_prefix}_ec2_private"
   }
 }

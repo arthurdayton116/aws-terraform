@@ -10,7 +10,7 @@ variable "user_data" {
                   echo "<html>" > /var/www/html/index.html
                   echo "<h1>Welcome to Apache Web Server</h1>" >> /var/www/html/index.html
                   echo "<h2>Created using Terraform</h2>" >> /var/www/html/index.html
-                  echo "<h4>amiId=$instanceid</h4>"
+                  echo "<h4>Instance ID=$instanceid</h4>" >> /var/www/html/index.html
                   echo "</html>" >> /var/www/html/index.html
                   EOF
 }

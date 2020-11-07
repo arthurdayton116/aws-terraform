@@ -29,7 +29,7 @@ resource "aws_internet_gateway" "igw" {
 ## Create public subnet
 resource "aws_subnet" "subnet_public" {
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.cidr_subnet
+  cidr_block              = var.cidr_subnet_public
   map_public_ip_on_launch = "true"
   availability_zone       = var.availability_zone
   tags = {
@@ -41,7 +41,7 @@ resource "aws_subnet" "subnet_public" {
 ## Create private subnet
 resource "aws_subnet" "subnet_private" {
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.cidr_subnet
+  cidr_block              = var.cidr_subnet_private
   map_public_ip_on_launch = "false"
   availability_zone       = var.availability_zone
   tags = {
