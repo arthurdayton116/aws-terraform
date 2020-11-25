@@ -13,3 +13,7 @@ output "webserver_ip" {
 output "webserver_link" {
   value = "http://${aws_instance.web.public_ip}"
 }
+
+output "base_url" {
+  value = aws_api_gateway_deployment.example.invoke_url
+}

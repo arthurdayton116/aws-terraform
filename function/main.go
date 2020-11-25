@@ -1,18 +1,34 @@
 package main
 
 import (
+        "context"
+        "encoding/json"
         "fmt"
-        "github.com/aws/aws-lambda-go/lambda"
         "github.com/aws/aws-lambda-go/events"
+        "github.com/aws/aws-lambda-go/lambda"
+        "log"
+        "os"
 )
 
-type MyEvent struct {
-        Name string `json:"What is your name?"`
-        Age int     `json:"How old are you?"`
+type envVars struct {
+        Name string `json:"name"`
+        Value string     `json:"value"`
 }
 
 type MyResponse struct {
         Message string `json:"Answer:"`
+}
+
+type basicEvent struct {
+        Name string `json:"name"`
+        Age int     `json:"age"`
+}
+
+type basicResponse struct {
+        Name string `json:"name"`
+        Age int     `json:"age"`
+        Message string `json:"message"`
+        envVars []envVars `json:"envvars"`
 }
 
 //type APIGatewayProxyResponse struct {
@@ -34,14 +50,39 @@ type MyResponse struct {
 //        Body                  string                        `json:"body"`
 //        IsBase64Encoded       bool                          `json:"isBase64Encoded,omitempty"`
 //}
-func HandleLambdaEvent(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+
+func HandleLambdaEvent(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
         //return MyResponse{Message: fmt.Sprintf("%s is %d years old!", event.Name, event.Age)}, nil
+        parsedReq, _ := parseMessage(req.Body)
+
+        envArr := []envVars{}
+        envArr = append(envArr,envVars{"foo", os.Getenv("foo")})
+        envArr = append(envArr,envVars{"please", os.Getenv("please")})
+
+        respBody := basicResponse{
+                Name:    parsedReq.Name,
+                Age:     parsedReq.Age,
+                Message: fmt.Sprintf("%s is %d years old!",parsedReq.Name,parsedReq.Age),
+                envVars: envArr,
+        }
+
+        respBodyByte, _ := json.Marshal(respBody)
         return events.APIGatewayProxyResponse{
                 StatusCode: 200,
-                Body: fmt.Sprintf("%s is %d years old!","a",0),
+                Body: string(respBodyByte),
         }, nil
 }
 
 func main() {
         lambda.Start(HandleLambdaEvent)
+}
+
+func parseMessage(reqBody string)(*basicEvent, error){
+        b := []byte(reqBody)
+        var resp basicEvent
+        err := json.Unmarshal(b, &resp)
+        if err == nil {
+                log.Print(fmt.Sprintf("Account Name: [%s]", resp.Name))
+        }
+        return &resp, nil
 }
