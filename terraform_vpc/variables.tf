@@ -1,6 +1,6 @@
 variable "cidr_vpc" {
   description = "CIDR block for the VPC"
-  default     = "10.1.0.0/16"
+  default     = "10.1.0.0/19"
 }
 variable "cidr_subnet_public" {
   description = "CIDR block for the subnet"
