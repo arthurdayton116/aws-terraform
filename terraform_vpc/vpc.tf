@@ -11,9 +11,9 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
 
   tags = merge(
-    var.base_tags,
+    local.base_tags,
     {
-      Name = "${var.resource_prefix}-vpc"
+      Name = "${local.resource_prefix}-vpc"
     },
   )
 }
@@ -22,9 +22,9 @@ resource "aws_vpc" "vpc" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = merge(
-    var.base_tags,
+    local.base_tags,
     {
-      Name = "${var.resource_prefix}-igw"
+      Name = "${local.resource_prefix}-igw"
     },
   )
 }
@@ -36,9 +36,9 @@ resource "aws_subnet" "subnet_public" {
   map_public_ip_on_launch = "true"
   availability_zone       = var.availability_zone
   tags = merge(
-    var.base_tags,
+    local.base_tags,
     {
-      Name   = "${var.resource_prefix}-vpc-subnet-public"
+      Name   = "${local.resource_prefix}-vpc-subnet-public"
       Access = "public"
     },
   )
@@ -51,9 +51,9 @@ resource "aws_subnet" "subnet_private" {
   map_public_ip_on_launch = "false"
   availability_zone       = var.availability_zone
   tags = merge(
-    var.base_tags,
+    local.base_tags,
     {
-      Name   = "${var.resource_prefix}-vpc-subnet-private"
+      Name   = "${local.resource_prefix}-vpc-subnet-private"
       Access = "private"
     },
   )

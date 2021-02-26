@@ -1,5 +1,5 @@
 resource "aws_security_group" "ec2" {
-  name   = "${var.resource_prefix}_ec2"
+  name   = "${local.resource_prefix}_ec2"
   vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
   ingress {
     from_port   = 22
@@ -13,6 +13,12 @@ resource "aws_security_group" "ec2" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port   = 25565
+    to_port     = 25565
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -20,9 +26,9 @@ resource "aws_security_group" "ec2" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = merge(
-    var.base_tags,
+    local.base_tags,
     {
-      Name = "${var.resource_prefix}_ec2"
+      Name = "${local.resource_prefix}_ec2"
     },
   )
 }

@@ -3,9 +3,9 @@ resource "aws_nat_gateway" "i" {
   subnet_id     = aws_subnet.subnet_public.id
 
   tags = merge(
-    var.base_tags,
+    local.base_tags,
     {
-      Name = "${var.resource_prefix}-natgw"
+      Name = "${local.resource_prefix}-natgw"
     },
   )
 }
@@ -13,9 +13,9 @@ resource "aws_nat_gateway" "i" {
 resource "aws_eip" "i" {
   vpc = true
   tags = merge(
-    var.base_tags,
+    local.base_tags,
     {
-      Name = "${var.resource_prefix}-eip"
+      Name = "${local.resource_prefix}-eip"
     },
   )
 }

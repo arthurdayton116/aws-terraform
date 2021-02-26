@@ -7,9 +7,9 @@ resource "aws_default_route_table" "main" {
   }
 
   tags = merge(
-    var.base_tags,
+    local.base_tags,
     {
-      Name = "${var.resource_prefix}-main-rt"
+      Name = "${local.resource_prefix}-main-rt"
     },
   )
 }
@@ -21,10 +21,14 @@ resource "aws_route_table" "i_public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
   tags = merge(
-    var.base_tags,
+    local.base_tags,
     {
-      Name = "${var.resource_prefix}-rt"
+      Name = "${local.resource_prefix}-rt"
     },
   )
 }
