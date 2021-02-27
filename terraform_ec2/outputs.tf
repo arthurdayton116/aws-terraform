@@ -9,22 +9,22 @@ output "key_id" {
 
 output "webserver_ip" {
   description = "The public ip of webserver"
-  value = aws_instance.web.public_ip
+  value = aws_eip_association.eip_assoc.public_ip
 }
 
 output "webserver_link" {
   description = "preformed link to public ip of webserver"
-  value = "http://${aws_instance.web.public_ip}"
+  value = "http://${aws_eip_association.eip_assoc.public_ip}"
 }
 
 output "public_ssh_link" {
   description = "preformed command for ssh to public server"
-  value = "ssh -i ~/.ssh/id_rsa_ec2 ubuntu@${aws_instance.web.public_ip}"
+  value = "ssh -i ~/.ssh/id_rsa_ec2 ubuntu@${aws_eip_association.eip_assoc.public_ip}"
 }
 
 output "copy_private_key_to_ec2" {
   description = "preformed scp command for copying private key to webserver"
-  value = "scp -i ~/.ssh/id_rsa_ec2 ~/.ssh/id_rsa_ec2 ubuntu@${aws_instance.web.public_ip}:~/.ssh/id_rsa_ec2"
+  value = "scp -i ~/.ssh/id_rsa_ec2 ~/.ssh/id_rsa_ec2 ubuntu@${aws_eip_association.eip_assoc.public_ip}:~/.ssh/id_rsa_ec2"
 }
 
 output "private_ssh_link" {

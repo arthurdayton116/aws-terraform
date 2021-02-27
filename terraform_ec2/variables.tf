@@ -18,5 +18,5 @@ variable "ami_id" {
 
 variable "ami_instance_type" {
   description = "Instance type for AMI"
-  default     = "t3.micro"
+  default     = "t2.medium"
 }

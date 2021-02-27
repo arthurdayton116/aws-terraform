@@ -2,33 +2,57 @@ variable "user_data" {
   description = "start up script for ec2 instance"
   default     = <<-EOF
                   #!/bin/sh
-                  apt-get update -y
+
+                  # check logs
+                  # /var/log/cloud-init.log and
+                  # /var/log/cloud-init-output.log
+
+                  sudo apt-get update -y
                   sudo apt-get install wget screen default-jdk nmap -y
                   sudo apt  install awscli -y
 
+                  # create directories for minecraft
                   sudo mkdir /opt/ubuntu
                   sudo mkdir /opt/ubuntu/willmc
+                  sudo chown -R ubuntu:ubuntu /opt/ubuntu/willmc/
 
-                  sudo bash -c "echo eula=true > /opt/ubuntu/willmc/eula.txt"
+                  list=$(aws s3 ls s3://sample-company-bucket/mcBackup/)
 
-                  sudo chown -R ubuntu /opt/ubuntu/willmc/
+                  if echo $list |grep -wc "world/" ; then
+                      aws s3 sync s3://sample-company-bucket/mcBackup /opt/ubuntu/willmc
+                      sudo rm -f /opt/ubuntu/willmcworld/session.lock
+                  else
+                      # Sets eula for minecraft
+                      sudo bash -c "echo eula=true > /opt/ubuntu/willmc/eula.txt"
+                      # copy minecraft jar to run directory
+                      cp /home/ubuntu/mc_16_4_server.jar /opt/ubuntu/willmc/mc_16_4_server.jar
+                  fi
 
-                  cp /home/ubuntu/mc_16_4_server.jar /opt/ubuntu/willmc/mc_16_4_server.jar
+                  sudo chown -R ubuntu:ubuntu /opt/ubuntu/willmc/
+                  # Create shutdown scrpt
+                  echo "aws s3 sync /opt/ubuntu/willmc s3://sample-company-bucket/mcBackup" > /opt/ubuntu/willmc/shutdown.sh
+                  sudo chmod uga+x /opt/ubuntu/willmc/shutdown.sh
 
+                  # make sure it is executable
                   chmod uga+x /opt/ubuntu/willmc/mc_16_4_server.jar
 
+                  # create service for autostart
                   sudo cp /home/ubuntu/minecraft@.service /etc/systemd/system/minecraft@.service
-
-
                   sudo systemctl start minecraft@willmc
-
                   sudo systemctl status minecraft@willmc
-
                   sudo systemctl enable minecraft@willmc
 
+                  # enable firewall and open port
+                  # https://wiki.ubuntu.com/UncomplicatedFirewall
+                  sudo ufw enable
+                  sudo ufw allow 25565/tcp
+                  sudo ufw allow 22/tcp
+                  sudo ufw allow 80/tcp
+
+                  # install apache for endpoint check
                   apt-get install -y apache2
                   service start apache2
-                  chkonfig apache2 on
+                  chkconfig apache2 on
                   instanceid="$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" -v http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null)"
                   echo "<html>" > /var/www/html/index.html
                   echo "<h1>Welcome to Apache Web Server</h1>" >> /var/www/html/index.html
