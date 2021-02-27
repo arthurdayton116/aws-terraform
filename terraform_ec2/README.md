@@ -1,16 +1,20 @@
-# aws-vpc
+# terraform_ec2
 
-## Generate a key for ec2 instance
-ssh-keygen -t rsa
+## What's here
+This folder contains code for deploying a public and private ec2 instance.
 
-## Login to ec2 instance
-ssh -i ~/.ssh/id_rsa_ec2 ubuntu@54.245.155.241
+Your local IP address is automatically added to network rules.
 
+The existence of a VPC and S3 bucket are assumed and their remote state values are fetched in the data.tf file and placed in local variables.
 
-## Fetch meta data
-instanceid="$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" -v http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null)"
+The public server installs Minecraft and copies world files from an S3 bucket if they exist.  On shutdown, it will sync world files back to S3 bucket.
 
-## Lambda
-https://docs.aws.amazon.com/lambda/latest/dg/lambda-golang.html
+All directories assume the existence of a provider_override.tf file (look at .gitignore) that has your credentials.  State is assumed to be local but could easily be anywhere else (I recommend Terraform Cloud).
 
-https://us-west-2.console.aws.amazon.com/xray/home?region=us-west-2#/getting-started
+The outputs.tf will generate connection strings for ssh and http.
+
+## Notes
+- If you need to generate a key for ec2 instance locally (Mac)
+  ```
+  ssh-keygen -t rsa
+  ```
