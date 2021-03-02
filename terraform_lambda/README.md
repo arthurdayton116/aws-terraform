@@ -1,4 +1,4 @@
-# TODO
+# TODO - Under construction
 
 ## Fetch meta data
 instanceid="$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" -v http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null)"

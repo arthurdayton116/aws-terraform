@@ -9,11 +9,11 @@ The existence of a VPC and S3 bucket are assumed and their remote state values a
 
 The public server installs Minecraft and copies world files from an S3 bucket if they exist.  On shutdown, it will sync world files back to S3 bucket.
 
-All directories assume the existence of a provider_override.tf file (look at .gitignore) that has your credentials.  State is assumed to be local but could easily be anywhere else (I recommend Terraform Cloud).
-
 The outputs.tf will generate connection strings for ssh and http.
 
 ## Notes
+All directories assume the existence of a provider_override.tf file (look at .gitignore) that has your credentials.  State is assumed to be local but could easily be anywhere else (I recommend Terraform Cloud).
+
 - If you need to generate a key for ec2 instance locally (Mac)
   ```
   ssh-keygen -t rsa

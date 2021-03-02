@@ -1,4 +1,3 @@
-# https://askubuntu.com/questions/293312/execute-a-script-upon-logout-reboot-shutdown-in-ubuntu
 [Unit]
 Description=Minecraft Server: %i
 After=network.target
@@ -17,7 +16,6 @@ ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "say SERVER SHUTTING DOWN 
 ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "save-all"\015'
 ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "stop"\015'
 ExecStop=/bin/bash /opt/ubuntu/willmc/shutdown.sh
-
 
 [Install]
 WantedBy=multi-user.target

@@ -1,3 +1,10 @@
-# Posts related to this repository
+# aws-terraform
 
-Create a VPC - https://arthurdayton116.github.io/
+## What's here
+This repository contains various example terraform deployments.
+
+## Posts related to this repository
+https://arthurdayton116.github.io/
+
+## Notes
+Each terraform folder has its own README.md describing its contents.

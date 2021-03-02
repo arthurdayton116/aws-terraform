@@ -11,8 +11,8 @@ resource "aws_instance" "web" {
   subnet_id              = data.terraform_remote_state.vpc.outputs.public_subnet_id
   vpc_security_group_ids = [aws_security_group.ec2_public.id]
   key_name               = aws_key_pair.ec2key.key_name
-  iam_instance_profile    = local.s3_instance_profile_name
-  private_ip = local.mc_private_ip
+  iam_instance_profile   = local.s3_instance_profile_name
+  private_ip             = local.mc_private_ip
 
   user_data = var.user_data
 
@@ -38,7 +38,6 @@ resource "aws_instance" "web" {
       private_key = file("~/.ssh/id_rsa_ec2")
       host        = self.public_dns
     }
-
   }
 
   tags = merge(

@@ -26,10 +26,10 @@ data "terraform_remote_state" "vars" {
   }
 }
 locals {
-  base_tags=data.terraform_remote_state.vars.outputs.base_tags
-  resource_prefix=data.terraform_remote_state.vars.outputs.resource_prefix
-  region=data.terraform_remote_state.vars.outputs.region
-  s3_instance_profile_name=data.terraform_remote_state.s3.outputs.s3_instance_profile_name
-  mc_public_ip_id=data.terraform_remote_state.vpc.outputs.mc_public_ip_id
-  mc_private_ip=data.terraform_remote_state.vpc.outputs.mc_private_ip
+  base_tags                = data.terraform_remote_state.vars.outputs.base_tags
+  resource_prefix          = data.terraform_remote_state.vars.outputs.resource_prefix
+  region                   = data.terraform_remote_state.vars.outputs.region
+  s3_instance_profile_name = data.terraform_remote_state.s3.outputs.s3_instance_profile_name
+  mc_public_ip_id          = data.terraform_remote_state.vpc.outputs.mc_public_ip_id
+  mc_private_ip            = data.terraform_remote_state.vpc.outputs.mc_private_ip
 }

@@ -1,4 +1,3 @@
-//https://kulasangar.medium.com/creating-and-attaching-an-aws-iam-role-with-a-policy-to-an-ec2-instance-using-terraform-scripts-aa85f3e6dfff
 resource "aws_iam_role" "ec2_s3_access_role" {
   name = "${local.resource_prefix}-s3-role"
   assume_role_policy = jsonencode({
@@ -26,14 +25,14 @@ resource "aws_iam_role" "ec2_s3_access_role" {
 }
 
 resource "aws_iam_policy" "s3_policy" {
-    name        = "${local.resource_prefix}-s3_access_all_buckets"
-    description = "Policy for access to all buckets"
+    name        = "${local.resource_prefix}-s3-world-bucket"
+    description = "Policy for access to the world bucket"
     policy      = jsonencode({
       Version = "2012-10-17"
       Statement = [{
         Effect = "Allow"
         Action = "s3:*"
-        Resource =  "*"
+        Resource =  aws_s3_bucket.mc.arn
       }]
     })
   }
