@@ -20,3 +20,4 @@ variable "ami_instance_type" {
   description = "Instance type for AMI"
   default     = "t2.medium"
 }
+

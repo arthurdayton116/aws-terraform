@@ -40,3 +40,4 @@ output "curl_private_host" {
   description = "preformed curl for connecting to private server"
   value       = "curl http://${aws_instance.web2.private_ip}"
 }
+

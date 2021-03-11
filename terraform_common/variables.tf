@@ -1,9 +1,10 @@
 variable "base_tags" {
   default = {
-    owner     = "Sample Company"
-    directory = "terraform"
-    createdBy = "terraform"
+    owner       = "Sample Company"
+    directory   = "terraform"
+    createdBy   = "terraform"
     environment = "production"
+    billTo      = "study"
   }
   description = "base resource tags"
   type        = map(string)
@@ -16,5 +17,5 @@ variable "resource_prefix" {
 
 variable "region" {
   description = "Where resources will be deployed"
-  default = "us-west-2"
+  default     = "us-west-2"
 }

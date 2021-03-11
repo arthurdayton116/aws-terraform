@@ -1,6 +1,6 @@
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-west-2"
+  region = local.region
 }
 
 resource "aws_iam_role" "iam_for_lambda" {

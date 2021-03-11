@@ -1,6 +1,6 @@
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-west-2"
+  region = local.region
 }
 
 ## Create vpc
@@ -29,7 +29,7 @@ resource "aws_internet_gateway" "igw" {
   )
 }
 
-## Create public subnet
+## Create private subnet
 resource "aws_subnet" "subnet_public" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.cidr_subnet_public

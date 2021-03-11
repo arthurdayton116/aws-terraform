@@ -6,6 +6,8 @@ variable "user_data_private" {
                   sudo apt  install awscli -y
                   apt-get install -y apache2
 
+                  ### Suppress overly verbose login screen - works on the 2nd login
+                  touch /home/ubuntu/.hushlogin
 
                   service start apache2
                   chkonfig apache2 on

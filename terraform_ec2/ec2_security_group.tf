@@ -37,15 +37,15 @@ resource "aws_security_group" "ec2_private" {
   name   = "${local.resource_prefix}_ec2_private"
   vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
   ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = ["${local.mc_private_ip}/32"]
   }
   ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["${local.mc_private_ip}/32"]
   }
   egress {

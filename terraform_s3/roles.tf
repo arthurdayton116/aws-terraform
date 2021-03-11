@@ -32,7 +32,9 @@ resource "aws_iam_policy" "s3_policy" {
       Statement = [{
         Effect = "Allow"
         Action = "s3:*"
-        Resource =  aws_s3_bucket.mc.arn
+        Resource =  ["${aws_s3_bucket.mc.arn}/*",
+          "${aws_s3_bucket.mc.arn}"
+          ]
       }]
     })
   }

@@ -16,7 +16,7 @@ variable "user_data" {
                   ### Create directories for minecraft
                   sudo mkdir /opt/ubuntu
                   sudo mkdir /opt/ubuntu/willmc
-                  sudo chown -R ubuntu:ubuntu /opt/ubuntu/willmc/
+                  sudo chown -R ubuntu:ubuntu /opt/ubuntu
 
                   ### Check if our bucket has anything in it
                   list=$(aws s3 ls s3://sample-company-bucket/mcBackup/)
@@ -55,7 +55,10 @@ variable "user_data" {
                   sudo ufw allow 22/tcp
                   sudo ufw allow 80/tcp
 
-                  ### Install apache for endpoint check and narf some simple HTML into an index file
+                  ### Suppress overly verbose login screen - works on the 2nd login
+                  touch /home/ubuntu/.hushlogin
+
+                  ### Install apache for endpoint check and barf some simple HTML into an index file
                   apt-get install -y apache2
                   service start apache2
                   chkconfig apache2 on
