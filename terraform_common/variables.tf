@@ -1,7 +1,6 @@
 variable "base_tags" {
   default = {
     owner       = "Sample Company"
-    directory   = "terraform"
     createdBy   = "terraform"
     environment = "production"
     billTo      = "study"

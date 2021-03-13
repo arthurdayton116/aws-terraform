@@ -1,4 +1,6 @@
-# terraform_ec2
+# terraform_ec2_dynamic
+
+# UNDER CONSTRUCTION
 
 ## What's here
 This folder contains code for deploying a public and private ec2 instance.

@@ -60,15 +60,15 @@ resource "aws_subnet" "subnet_private" {
 }
 
 resource "aws_eip" "mc_public_ip" {
-  vpc = true
+  vpc                       = true
   associate_with_private_ip = var.mc_subnet_private_ip
   depends_on                = [aws_internet_gateway.igw]
 
   tags = merge(
-  local.base_tags,
-  {
-    Name   = "${local.resource_prefix}-public-ip"
-  },
+    local.base_tags,
+    {
+      Name = "${local.resource_prefix}-public-ip"
+    },
   )
 }
 
