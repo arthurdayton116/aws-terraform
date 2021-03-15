@@ -1,0 +1,26 @@
+[Unit]
+Description=NodeAPI Server: %i
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/ubuntu/api
+
+User=ubuntu
+Group=ubuntu
+
+Restart=always
+
+ExecStart=/usr/bin/docker run \
+    --workdir /app \
+    --name thanos \
+    -v /opt/ubuntu/api:/app \
+    -p 8080:3000 \
+    node:current-buster /bin/bash -c "npm install; npm start;"
+
+ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "say SERVER SHUTTING DOWN IN 5 SECONDS. SAVING ALL MAPS..."\015'
+ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "save-all"\015'
+ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "stop"\015'
+
+
+[Install]
+WantedBy=multi-user.target
