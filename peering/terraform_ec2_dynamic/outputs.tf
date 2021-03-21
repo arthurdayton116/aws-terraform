@@ -9,8 +9,8 @@ output "key_id" {
 
 output "webserver_ips" {
   value = {
-  for k, ec2 in aws_instance.public :
-  k => ec2.public_ip
+    for k, ec2 in aws_instance.public :
+    k => ec2.public_ip
   }
 
   description = "The public ip of webserver"
@@ -18,8 +18,8 @@ output "webserver_ips" {
 
 output "webserver_link" {
   value = {
-  for k, ec2 in aws_instance.public :
-  k => "http://${ec2.public_ip}"
+    for k, ec2 in aws_instance.public :
+    k => "http://${ec2.public_ip}"
   }
 
   description = "preformed link to public ip of webserver"
@@ -27,12 +27,12 @@ output "webserver_link" {
 
 output "public_ssh_link" {
   value = {
-  for k, ec2 in aws_instance.public :
-  k => "ssh -i ~/.ssh/id_rsa_ec2 ubuntu@${ec2.public_ip}"
+    for k, ec2 in aws_instance.public :
+    k => "ssh -i ~/.ssh/id_rsa_ec2 ubuntu@${ec2.public_ip}"
   }
 
   description = "preformed command for ssh to public server"
-//  value       = "ssh -i ~/.ssh/id_rsa_ec2 ubuntu@${each.value.eip_assoc.public_ip}"
+  //  value       = "ssh -i ~/.ssh/id_rsa_ec2 ubuntu@${each.value.eip_assoc.public_ip}"
 }
 
 //output "copy_private_key_to_ec2" {

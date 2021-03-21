@@ -15,6 +15,7 @@ ExecStart=/usr/bin/docker run \
     --name thanos \
     -v /opt/ubuntu/api:/app \
     -p 8080:3000 \
+    --env
     node:current-buster /bin/bash -c "npm install; npm start;"
 
 ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "say SERVER SHUTTING DOWN IN 5 SECONDS. SAVING ALL MAPS..."\015'

@@ -5,6 +5,14 @@ output "vpc_ids" {
   }
 }
 
+output "vpc_info" {
+  value = {
+  for k, vpc in aws_vpc.vpc :
+  k => vpc
+  }
+}
+
+
 output "igw_ids" {
   value = {
   for k, igw in aws_internet_gateway.i :

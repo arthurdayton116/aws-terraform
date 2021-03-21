@@ -40,10 +40,11 @@ locals {
   s3_bucket_name           = data.terraform_remote_state.s3.outputs.dynamic_ec2_s3_bucket_id
 
   // VPC
-//  mc_public_ip_id = data.terraform_remote_state.vpc.outputs.mc_public_ip_id
-//  mc_private_ip   = data.terraform_remote_state.vpc.outputs.mc_private_ip
-  vpc_ids = data.terraform_remote_state.vpc.outputs.vpc_ids
-  subnet_ids = data.terraform_remote_state.vpc.outputs.subnet_ids
+  //  mc_public_ip_id = data.terraform_remote_state.vpc.outputs.mc_public_ip_id
+  //  mc_private_ip   = data.terraform_remote_state.vpc.outputs.mc_private_ip
+  vpc_ids     = data.terraform_remote_state.vpc.outputs.vpc_ids
+  vpc_info    = data.terraform_remote_state.vpc.outputs.vpc_info
+  subnet_ids  = data.terraform_remote_state.vpc.outputs.subnet_ids
   subnet_info = data.terraform_remote_state.vpc.outputs.subnet_info
 
   // Paths

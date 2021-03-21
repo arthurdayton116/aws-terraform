@@ -30,6 +30,7 @@ locals {
       cidr_block = "10.1.96.0/19"
       public     = "false"
       nat_gateway = "false"
+      private_ip = "10.1.96.10"
     },
     a_e = {
       vpc_key    = "a",
@@ -37,6 +38,7 @@ locals {
       cidr_block = "10.1.128.0/19"
       public     = "false"
       nat_gateway = "false"
+      private_ip = "10.1.128.10"
     },
     a_f = {
       vpc_key    = "a",
@@ -44,6 +46,7 @@ locals {
       cidr_block = "10.1.160.0/19"
       public     = "false"
       nat_gateway = "false"
+      private_ip = "10.1.160.10"
     },
     b_a = {
       vpc_key    = "b",
@@ -75,6 +78,7 @@ locals {
       cidr_block = "10.2.96.0/19"
       public     = "false"
       nat_gateway = "false"
+      private_ip = "10.2.96.10"
     },
     b_e = {
       vpc_key    = "b",
@@ -82,6 +86,7 @@ locals {
       cidr_block = "10.2.128.0/19"
       public     = "false"
       nat_gateway = "false"
+      private_ip = "10.2.128.10"
     },
     b_f = {
       vpc_key    = "b",
@@ -89,6 +94,7 @@ locals {
       cidr_block = "10.2.160.0/19"
       public     = "false"
       nat_gateway = "false"
+      private_ip = "10.2.160.10"
     },
   }
 }
