@@ -8,3 +8,7 @@ https://arthurdayton116.github.io/
 
 ## Notes
 Each terraform folder has its own README.md describing its contents.
+
+## Dev environment
+
+docker-compose run  --rm devenv

@@ -11,6 +11,16 @@ The public server installs Minecraft and copies world files from an S3 bucket if
 
 The outputs.tf will generate connection strings for ssh and http.
 
+To use this repo within Docker container then use the following:
+
+```
+docker run \
+--workdir /mnt \
+--entrypoint /bin/sh \
+-v `pwd`:/mnt \
+-i -t hashicorp/terraform:0.14.8 
+```
+
 ## Notes
 All directories assume the existence of a provider_override.tf file (look at .gitignore) that has your credentials.  State is assumed to be local but could easily be anywhere else (I recommend Terraform Cloud).
 

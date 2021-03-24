@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  devenv:
+    build:
+      context: .
+      dockerfile: devEnv.dockerfile
+    working_dir: /mnt
+    entrypoint: /bin/sh
+    volumes:
+      - .:/mnt
+      - ~/.ssh:/keys
+      - ~/Desktop/arthurProjects/goapi/template-service-go:/api
+      - ~/Desktop/arthurProjects/simpleReactWithApi:/react

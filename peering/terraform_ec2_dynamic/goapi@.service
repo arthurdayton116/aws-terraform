@@ -5,7 +5,6 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-EnvironmentFile=/etc/environment
 WorkingDirectory=/opt/ubuntu/api
 
 User=ubuntu
@@ -20,17 +19,10 @@ ExecStart=/usr/bin/docker run \
                 --workdir /go/src \
                 -v /opt/ubuntu/api/go/src:/go/src \
                 -v /opt/ubuntu/api/go/bin:/go/bin \
-                --env SWAGGER_HOST=$SWAGGER_HOST \
-                --env SWAGGER_BASE_PATH=/ \
-                --env TARGETOS=linux \
-                --env TARGETARCH=amd64 \
-                --env PRIVATE_IP=$PRIVATE_IP \
-                --env PRIVATE_DNS=$PRIVATE_DNS \
-                --env SECURITY_GROUP=$SECURITY_GROUP \
-                --env AVAILABILITY_ZONE=$AVAILABILITY_ZONE \
+                --env-file /etc/goapi/environment.conf \
                 -p 3150:1323 \
                 -d golang:1.16.2-buster go run .
-
+EnvironmentFile=/etc/environment
 ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "say SERVER SHUTTING DOWN IN 5 SECONDS. SAVING ALL MAPS..."\015'
 ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "save-all"\015'
 ExecStop=/usr/bin/screen -p 0 -S mc-%i -X eval 'stuff "stop"\015'

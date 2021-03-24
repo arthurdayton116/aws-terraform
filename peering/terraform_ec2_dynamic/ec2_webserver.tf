@@ -20,13 +20,13 @@ resource "aws_instance" "public" {
   user_data = var.user_data
 
   provisioner "file" {
-    source      = "~/Desktop/arthurProjects/simpleReactWithApi/apps/ui/build"
+    source      = var.react_path
     destination = "/tmp"
 
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("/Users/arthur.dayton/.ssh/id_rsa_ec2")
+      private_key = file(var.private_key_path)
       host        = self.public_dns
     }
   }
@@ -38,7 +38,7 @@ resource "aws_instance" "public" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("/Users/arthur.dayton/.ssh/id_rsa_ec2")
+      private_key = file(var.private_key_path)
       host        = self.public_dns
     }
   }
@@ -50,7 +50,7 @@ resource "aws_instance" "public" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("/Users/arthur.dayton/.ssh/id_rsa_ec2")
+      private_key = file(var.private_key_path)
       host        = self.public_dns
     }
   }
@@ -62,7 +62,7 @@ resource "aws_instance" "public" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("/Users/arthur.dayton/.ssh/id_rsa_ec2")
+      private_key = file(var.private_key_path)
       host        = self.public_dns
     }
   }
@@ -117,7 +117,7 @@ resource "aws_instance" "public" {
 //    connection {
 //      type        = "ssh"
 //      user        = "ubuntu"
-//      private_key = file("/Users/arthur.dayton/.ssh/id_rsa_ec2")
+//      private_key = file(var.private_key_path)
 //      host        = self.public_dns
 //    }
 //  }
@@ -135,7 +135,7 @@ resource "aws_instance" "public" {
 //    connection {
 //      type        = "ssh"
 //      user        = "ubuntu"
-//      private_key = file("/Users/arthur.dayton/.ssh/id_rsa_ec2")
+//      private_key = file(var.private_key_path)
 //      host        = self.public_dns
 //    }
 //  }
@@ -147,7 +147,7 @@ resource "aws_instance" "public" {
 //    connection {
 //      type        = "ssh"
 //      user        = "ubuntu"
-//      private_key = file("/Users/arthur.dayton/.ssh/id_rsa_ec2")
+//      private_key = file(var.private_key_path)
 //      host        = self.public_dns
 //    }
 //  }

@@ -40,15 +40,18 @@ variable "user_data" {
                   localdns="$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" -v http://169.254.169.254/latest/meta-data/local-hostname 2>/dev/null)"
                   availzone="$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" -v http://169.254.169.254/latest/meta-data/placement/availability-zone 2>/dev/null)"
 
-                  sudo echo "INSTANCE_ID=$instanceid" >> /etc/environment
-                  sudo echo "PUBLIC_IP=$publicip" >> /etc/environment
-                  sudo echo "PRIVATE_IP=$privateip" >> /etc/environment
-                  sudo echo "INSTANCE_TYPE=$instance-type" >> /etc/environment
-                  sudo echo "SECURITY_GROUP=$securitygroups" >> /etc/environment
-                  sudo echo "PRIVATE_DNS=$localdns" >> /etc/environment
-                  sudo echo "AVAILABILITY_ZONE=$availzone" >> /etc/environment
-                  sudo echo "SWAGGER_HOST=$publicip:3150" >> /etc/environment
-                  sudo echo "SWAGGER_HOST_PRIVATE=$privateip:3150" >> /etc/environment
+                  sudo mkdir /etc/goapi
+                  sudo echo "INSTANCE_ID=$instanceid" >> /etc/goapi/environment.conf
+                  sudo echo "PUBLIC_IP=$publicip" >> /etc/goapi/environment.conf
+                  sudo echo "PRIVATE_IP=$privateip" >> /etc/goapi/environment.conf
+                  sudo echo "INSTANCE_TYPE=$instance-type" >> /etc/goapi/environment.conf
+                  sudo echo "SECURITY_GROUP=$securitygroups" >> /etc/goapi/environment.conf
+                  sudo echo "PRIVATE_DNS=$localdns" >> /etc/goapi/environment.conf
+                  sudo echo "AVAILABILITY_ZONE=$availzone" >> /etc/goapi/environment.conf
+                  sudo echo "SWAGGER_HOST=$publicip:3150" >> /etc/goapi/environment.conf
+                  sudo echo "SWAGGER_HOST_PRIVATE=$privateip:3150" >> /etc/goapi/environment.conf
+
+                  sudo cat /etc/goapi/environment.conf >> /etc/environment
 
                   ### Enable firewall and open ports for Minecraft, SSH and Apache
                   # https://wiki.ubuntu.com/UncomplicatedFirewall
@@ -63,11 +66,11 @@ variable "user_data" {
                   sudo mkdir /var/www/html
 
                   sudo cp -R /tmp/build/* /var/www/html
-                  sudo cp -R /tmp/template-service-go/* /opt/ubuntu/api/go
+                  sudo cp -R /tmp/api/* /opt/ubuntu/api/go
 
                   cd /var/www/html
                   sudo sed -i "s/localhost:3060/$publicip:8080/g" $(find . -type f)
-                  cat /tmp/env_vars >> /etc/environment
+
 
                   ### Suppress overly verbose login screen - works on the 2nd login
                   touch /home/ubuntu/.hushlogin
