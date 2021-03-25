@@ -2,7 +2,7 @@ data "http" "myip" {
   url = "http://ipv4.icanhazip.com"
 }
 data "terraform_remote_state" "vars" {
-  backend = local.path_common
+  backend = path_backend
 
   config = {
     path = local.path_common
