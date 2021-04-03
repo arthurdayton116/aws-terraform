@@ -23,7 +23,7 @@ resource "aws_instance" "public" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("~/.ssh/id_rsa_ec2")
+      private_key = file(var.private_key_path)
       host        = self.public_dns
     }
   }
@@ -35,7 +35,7 @@ resource "aws_instance" "public" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("~/.ssh/id_rsa_ec2")
+      private_key = file(var.private_key_path)
       host        = self.public_dns
     }
   }

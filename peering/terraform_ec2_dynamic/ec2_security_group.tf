@@ -1,8 +1,7 @@
 resource "aws_security_group" "ec2_public" {
-  for_each = { for k, vpc in local.vpc_ids : k => vpc }
+  for_each = { for k, vpc in local.vpc_config : k => vpc }
 
   name   = "${local.resource_prefix}-${each.key}-public-ec2-sg"
-  vpc_id = each.value
   ingress {
     from_port   = 22
     to_port     = 22
@@ -20,6 +19,12 @@ resource "aws_security_group" "ec2_public" {
     to_port     = 3150
     protocol    = "tcp"
     cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
+  }
+  ingress {
+    from_port   = 3150
+    to_port     = 3150
+    protocol    = "tcp"
+    cidr_blocks = each.value.sg_cidr
   }
   egress {
     from_port   = 0

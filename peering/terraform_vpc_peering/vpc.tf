@@ -6,14 +6,18 @@ provider "aws" {
 locals {
   vpc_values = {
     a = {
-      name     = "${local.resource_prefix}-vpc",
-      cidr_vpc = "10.1.0.0/16",
-      region   = local.region
+      name      = "${local.resource_prefix}-vpc",
+      cidr_vpc  = "10.1.0.0/16",
+      region    = local.region
+      sg_cidr   = ["10.1.0.0/16", "10.2.0.0/16"]
+      peer_cidr = "10.2.0.0/16"
     },
     b = {
-      name     = "${local.resource_prefix}-vpc",
-      cidr_vpc = "10.2.0.0/16",
-      region   = local.region
+      name      = "${local.resource_prefix}-vpc",
+      cidr_vpc  = "10.2.0.0/16",
+      region    = local.region,
+      sg_cidr   = ["10.1.0.0/16", "10.2.0.0/16"]
+      peer_cidr = "10.1.0.0/16"
     },
   }
 }
@@ -46,4 +50,11 @@ resource "aws_internet_gateway" "i" {
       Name = "${local.resource_prefix}-vpc${each.key}-igw"
     },
   )
+}
+
+resource "aws_vpc_peering_connection" "a_b" {
+  peer_vpc_id = aws_vpc.vpc["a"].id
+  vpc_id      = aws_vpc.vpc["b"].id
+  peer_region = local.region
+  auto_accept = true
 }

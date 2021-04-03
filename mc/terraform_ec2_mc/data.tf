@@ -31,9 +31,10 @@ locals {
   //
 
   // Common Vars
-  base_tags       = data.terraform_remote_state.vars.outputs["base_tags${local.config}"]
-  resource_prefix = data.terraform_remote_state.vars.outputs["resource_prefix${local.config}"]
-  region          = data.terraform_remote_state.vars.outputs["region${local.config}"]
+  base_tags           = data.terraform_remote_state.vars.outputs["base_tags${local.config}"]
+  resource_prefix_pre = data.terraform_remote_state.vars.outputs["resource_prefix${local.config}"]
+  resource_prefix     = "${local.resource_prefix_pre}_test"
+  region              = data.terraform_remote_state.vars.outputs["region${local.config}"]
 
   // S3
   s3_instance_profile_name = data.terraform_remote_state.s3.outputs.s3_instance_profile_name

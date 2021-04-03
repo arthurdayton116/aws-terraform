@@ -8,11 +8,11 @@ data "terraform_remote_state" "vars" {
 locals {
   config = ""
   // Split path into directories
-  dir_path_array = split("/",path.cwd)
+  dir_path_array = split("/", path.cwd)
   // get length of resulting array
   dpl = length(local.dir_path_array)
   // put it back together with last two dirs (non zero index array)
-  dir_path_tag = join("/",slice(local.dir_path_array,local.dpl - 2, local.dpl))
+  dir_path_tag = join("/", slice(local.dir_path_array, local.dpl - 2, local.dpl))
 
   // Common Vars
   base_tags = merge(

@@ -16,6 +16,15 @@ output "webserver_ips" {
   description = "The public ip of webserver"
 }
 
+output "webserver_privateips" {
+  value = {
+  for k, ec2 in aws_instance.public :
+  k => ec2.private_ip
+  }
+
+  description = "The private ip of webserver"
+}
+
 output "webserver_link" {
   value = {
     for k, ec2 in aws_instance.public :

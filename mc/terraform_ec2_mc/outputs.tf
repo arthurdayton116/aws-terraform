@@ -36,3 +36,6 @@ output "curl_local_host" {
   value = "curl http://localhost"
 }
 
+output "path_vpc" {
+  value = local.path_vpc
+}
