@@ -28,8 +28,6 @@ data "terraform_remote_state" "vars" {
 
 locals {
   config = ""
-  //
-
   // Common Vars
   base_tags       = data.terraform_remote_state.vars.outputs["base_tags${local.config}"]
   resource_prefix = data.terraform_remote_state.vars.outputs["resource_prefix${local.config}"]
@@ -40,8 +38,6 @@ locals {
   s3_bucket_name           = data.terraform_remote_state.s3.outputs.dynamic_ec2_s3_bucket_id
 
   // VPC
-  //  mc_public_ip_id = data.terraform_remote_state.vpc.outputs.mc_public_ip_id
-  //  mc_private_ip   = data.terraform_remote_state.vpc.outputs.mc_private_ip
   vpc_ids     = data.terraform_remote_state.vpc.outputs.vpc_ids
   vpc_info    = data.terraform_remote_state.vpc.outputs.vpc_info
   vpc_config = data.terraform_remote_state.vpc.outputs.vpc_config

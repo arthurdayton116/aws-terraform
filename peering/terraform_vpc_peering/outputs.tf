@@ -19,7 +19,6 @@ output "vpc_config" {
   }
 }
 
-
 output "igw_ids" {
   value = {
     for k, igw in aws_internet_gateway.i :

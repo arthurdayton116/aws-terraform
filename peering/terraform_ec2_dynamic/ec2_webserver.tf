@@ -67,20 +67,6 @@ resource "aws_instance" "public" {
     }
   }
 
-  //  provisioner "remote-exec" {
-  //    inline = [
-  //      "sudo echo \"PRIVATE_IP=${self.private_ip}\" >> /etc/environment",
-  //      "sudo echo \"PRIVATE_DNS=${self.private_dns}\" >> /etc/environment",
-  //      "sudo echo \"SECURITY_GROUP=${self.security_groups}\" >> /etc/environment",
-  //      "sudo echo \"AVAILABILITY_ZONE=${self.availability_zone}\" >> /etc/environment",
-  //      "sudo echo \"SWAGGER_HOST=${self.public_ip}:3150\" >> /etc/environment",
-  //      "sudo echo \"INSTANCE_ID=${self.id}\" >> /etc/environment",
-  //      "sudo echo \"PUBLIC_IP=${self.public_ip}\" >> /etc/environment",
-  //      "sudo echo \"INSTANCE_TYPE=${self.instance_type}\" >> /etc/environment",
-  //      "sudo echo \"SECURITY_GROUPS=${self.security_groups}\" >> /etc/environment",
-  //    ]
-  //  }
-
   tags = merge(
     local.base_tags,
     {
