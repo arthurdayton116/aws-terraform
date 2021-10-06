@@ -1,5 +1,5 @@
 data "terraform_remote_state" "vars" {
-  backend = local.path_common
+  backend = local.path_backend
 
   config = {
     path = local.path_common

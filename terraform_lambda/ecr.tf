@@ -7,9 +7,9 @@ resource "aws_ecr_repository" "lambda" {
   }
 
   tags = merge(
-  local.base_tags,
-  {
-    Name = "${local.resource_prefix}-ecr"
-  },
+    local.base_tags,
+    {
+      Name = "${local.resource_prefix}-ecr"
+    },
   )
 }

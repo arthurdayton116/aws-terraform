@@ -5,6 +5,15 @@ data "terraform_remote_state" "vars" {
     path = local.path_common
   }
 }
+
+data "terraform_remote_state" "dynamo_db" {
+  backend = local.path_backend
+
+  config = {
+    path = local.path_dynamo
+  }
+}
+
 locals {
   config = ""
   // Split path into directories
@@ -22,10 +31,15 @@ locals {
     },
   )
   resource_prefix = data.terraform_remote_state.vars.outputs.resource_prefix
-  region          = data.terraform_remote_state.vars.outputs.region
+//  region          = data.terraform_remote_state.vars.outputs.region
+  region          = "us-east-1"
 
   // Paths
   path_common    = "${path.module}/../terraform_common/terraform.tfstate"
+  path_dynamo    = "${path.module}/../terraform_dynamodb/terraform.tfstate"
   path_backend   = "local"
   path_directory = path.module
+
+  //DB
+  dynamo_arn = data.terraform_remote_state.dynamo_db.outputs.dynamo_db_arn
 }

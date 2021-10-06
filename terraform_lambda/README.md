@@ -1,7 +1,10 @@
 # TODO - Under construction
 
-## Fetch meta data
-instanceid="$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" -v http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null)"
+curl -v -X OPTIONS https://l08bwgxgfj.execute-api.us-west-2.amazonaws.com/whatsmyname
+
+https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html
+
+https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-test-cors.html
 
 ## Lambda
 https://docs.aws.amazon.com/lambda/latest/dg/lambda-golang.html
@@ -22,9 +25,15 @@ docker build -t testawsimage:local .
 
 docker build -f Dockerfile.localbuild -t testawsimage:local .
 
+## To run locally using 
+docker build -f Dockerfile.localbuild -t testawsimage:local .
+
+cd function; \
+docker build -f Dockerfile.localbuild -t testawsimage:local .; \
+cd ..;\
 docker rm testawsimage; docker run -p 9000:8080 \
   -v `pwd`/config:/root/.aws/config \
   testawsimage:local 
       
- curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"name":"hello world!", "age": 10}'
-aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 793219755011.dkr.ecr.us-west-2.amazonaws.com/sample-company-ecr   
+
+# aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 793219755011.dkr.ecr.us-west-2.amazonaws.com/sample-company-ecr   
