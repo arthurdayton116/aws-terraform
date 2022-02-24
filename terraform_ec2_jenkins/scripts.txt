@@ -1,0 +1,142 @@
+sudo curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+sudo echo "deb https://repos.influxdata.com/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+sudo apt update
+sudo apt install influxdb
+sudo systemctl stop influxdb
+sudo systemctl start influxdb
+sudo systemctl enable --now influxdb
+sudo systemctl is-enabled influxdb
+
+                  #####################################
+                  # Filebeat
+                  #####################################
+                  wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+
+                  echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
+
+                  sudo apt-get update && sudo apt-get install filebeat -y
+
+                  sudo systemctl enable filebeat
+                  sudo systemctl start filebeat
+                  sudo systemctl status filebeat
+                  #####################################
+
+                  #####################################
+                  # Elastic search
+                  #####################################
+                  curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.0.0-amd64.deb
+                  sudo dpkg -i elasticsearch-8.0.0-amd64.deb
+                  sudo systemctl daemon-reload
+                  sudo systemctl enable elasticsearch.service
+                  sudo systemctl start elasticsearch.service
+                  sudo systemctl status elasticsearch.service
+
+ #####################################
+                  The generated password for the elastic built-in superuser is : YmIPt6pPBxwk64AvuygI
+
+                  If this node should join an existing cluster, you can reconfigure this with
+                  '/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token <token-here>'
+                  after creating an enrollment token on your existing cluster.
+
+                  You can complete the following actions at any time:
+
+                  Reset the password of the elastic built-in superuser with
+                  '/usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic'.
+
+                  Generate an enrollment token for Kibana instances with
+                   '/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana'.
+
+                  Generate an enrollment token for Elasticsearch nodes with
+                  '/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node'.
+ #####################################
+
+curl -L -O https://artifacts.elastic.co/downloads/kibana/kibana-8.0.0-linux-x86_64.tar.gz
+tar xzvf kibana-8.0.0-linux-x86_64.tar.gz
+cd kibana-8.0.0-linux-x86_64/
+./bin/kibana
+
+
+
+                  #####################################
+                  # elastic search
+                  #####################################
+                  wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+
+                  echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+
+                  sudo apt-get update && sudo apt-get install elasticsearch
+
+sudo vim /etc/elasticsearch/elasticsearch.yml network.host: "localhost" http.port:9200 cluster.initial_master_nodes: ["<PrivateIP"]
+
+                  sudo mv /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.OLD
+                  sudo mv /etc/elasticsearch/jvm.options /etc/elasticsearch/jvm.options.OLD
+
+                  sudo cp /home/ubuntu/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml
+                  sudo cp /home/ubuntu/jvm.options /etc/elasticsearch/jvm.options
+                  #####################################
+                  # sudo apt-get install logstash
+                  #####################################
+                  # kibana
+                  #####################################
+                  sudo apt-get install kibana
+
+                  # sudo cp /home/ubuntu/apache-01.conf /etc/logstash/conf.d/apache-01.conf
+
+                  sudo mv /etc/kibana/kibana.yml /etc/kibana/kibana.yml.OLD
+                  sudo cp /home/ubuntu/kibana.yml /etc/kibana/kibana.yml
+                  #####################################
+
+                  #####################################
+                  # start
+                  #####################################
+                  sudo service elasticsearch start
+                  # sudo service logstash start
+                  sudo service kibana start
+
+
+                                 #####################################
+                                    # Filebeat
+                                    #####################################
+                                    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+
+                                    echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
+
+                                    sudo apt-get update && sudo apt-get install filebeat -y
+
+                                    sudo systemctl enable filebeat
+                                    sudo systemctl start filebeat
+                                    sudo systemctl status filebeat
+                                    #####################################
+
+sudo vim /etc/logstash/conf.d/jenkins-01.conf
+
+#####################################
+node -v
+#####################################
+npm version
+#####################################
+cd ui
+#####################################
+yarn install
+#####################################
+yarn build
+#####################################
+ls
+
+/var/lib/jenkins/jobs/*/builds/*/log
+
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+   - /var/log/jenkins/jenkins.log
+  exclude_files: ['.gz$']
+  multiline.pattern: '^[a-zA-Z]+\s[0-9]{1,2},\s[0-9]{4}\s[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}\s(?:AM|am|PM|pm)'
+  multiline.negate: true
+  multiline.match: after
+  fields:
+    type: jenkins-server
+  fields_under_root: true
+
+
+  input { file { path => "/home/ubuntu/apache-daily-access.log" start_position => "beginning" sincedb_path => "/dev/null" } } filter { grok { match => { "message" => "%{COMBINEDAPACHELOG}" } } date { match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ] } geoip { source => "clientip" } } output { elasticsearch { hosts => ["localhost:9200"] } }

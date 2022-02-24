@@ -1,12 +1,13 @@
-var AWS = require("aws-sdk");
+const AWS = require("aws-sdk");
+const uuid4 = require("uuid4")
 // Set the AWS Region.
 AWS.config.update({ region: "us-east-1" });
-var credentials = new AWS.SharedIniFileCredentials();
+const credentials = new AWS.SharedIniFileCredentials();
 AWS.config.credentials = credentials;
 // Create DynamoDB document client
-var docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+const docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
-var params = {
+const params = {
     TableName: 'sample-company-test',
     Key: {'TestTableHashKey': "7eaf9564-9142-4c97-9fd1-5841cf64664b"}
 };
@@ -54,6 +55,27 @@ module.exports = {
     },
     Mutation: {
         addComment:  (parent, args, context, info) => {
+
+            var params = {
+                TableName: 'sample-company-test',
+                Item: {
+                    'TestTableHashKey': uuid4(),
+                    'comment': 'STRING_VALUE',
+                    'name': 'graphql',
+                    'postid': '100',
+                    'timestamp': '2021-10-06'
+                },
+                ReturnValues: "ALL_OLD"
+            };
+
+            docClient.put(params, function(err, data) {
+                if (err) {
+                    console.log("Error", err);
+                } else {
+                    console.log("PUT Success", data);
+                }
+            });
+
             console.log("args", args)
             return {
                 postid: args.comment.postid,

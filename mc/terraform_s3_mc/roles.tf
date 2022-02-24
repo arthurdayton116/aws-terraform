@@ -24,6 +24,9 @@ resource "aws_iam_role" "ec2_s3_access_role" {
 
 }
 
+
+
+
 resource "aws_iam_policy" "s3_policy" {
   name        = "${local.resource_prefix}-s3-world-bucket"
   description = "Policy for access to the world bucket"

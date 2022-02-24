@@ -14,8 +14,8 @@ resource "aws_security_group" "ec2_public" {
     cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
   }
   ingress {
-    from_port   = 25565
-    to_port     = 25565
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
   }
