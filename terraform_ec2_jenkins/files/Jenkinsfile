@@ -6,6 +6,7 @@ import java.time.ZoneId;
 // https://opensource.triology.de/jenkins/pipeline-syntax/globals
 // one way to get start time
 def startMill =  Long.parseLong("${currentBuild.startTimeInMillis}")
+def startMillStarter =  Long.parseLong("${currentBuild.startTimeInMillis}")-1
 def startDateTime = Instant.ofEpochMilli(startMill).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
 def startDateTimeStarter = Instant.ofEpochMilli(startMill-1).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
 def endDateTimeStarter = Instant.ofEpochMilli(0).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
@@ -35,7 +36,7 @@ pipeline {
             "message": "STARTED - this came from pipeline",
             "durationString": "${currentBuild.durationString}",
             "absoluteUrl": "${currentBuild.absoluteUrl}",
-            "startTimeInMillis": "${currentBuild.startTimeInMillis}",
+            "startTimeInMillis": "${startMillStarter}",
             "build_start_time": "${startDateTimeStarter}",
             "build_end_time": "${endDateTimeStarter}",
             "build_duration_seconds": "0",

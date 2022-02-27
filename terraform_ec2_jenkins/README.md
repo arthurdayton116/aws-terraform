@@ -29,6 +29,10 @@ Confirm sample logstash file setup worked by creating index
 ![Stack Management](doc/StackManagement.png)
 ![Logstash Index](doc/LogstashIndex.png)
 
+Should create these 3 index patterns
+
+![Index Patterns](doc/indexPatterns.png)
+
 Go to discover and confirm data exists
 
 ![Discover(doc/Discover.png)
@@ -53,7 +57,30 @@ Go to discover and confirm data exists
 
 ![Pipeline Job](doc/BuildJob.png)
 
+### Import Report Canvas To Kibana
+
+![Import Dashboard](doc/importDashboardCanvas.png)
+
+Set auto refresh
+
+![Auto Refresh](doc/autoRefresh.png)
+
+### Run Build and Watch Results
+
 ![Run Build](doc/RunBuild.png)
+
+Confirm Jenkins job started
+
+![Build Started](doc/buildStartedDashboard.png)
+
+Confirm Jenkins job completed
+
+![Build Started](doc/buildFinishedDashboard.png)
+
+
+#### Run Terraform Destroy to cleanup
+
+``` terraform destroy ```
 
 ### Troubleshooting
 
