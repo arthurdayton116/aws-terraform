@@ -110,6 +110,29 @@ sudo vim /etc/elasticsearch/elasticsearch.yml network.host: "localhost" http.por
 
 sudo vim /etc/logstash/conf.d/jenkins-01.conf
 
+curl -X GET http://localhost:8080/job/build-job/config.xml -u un:pw -o mylocalconfig.xml
+
+CRUMB=$(curl -s 'http://localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)' -u :)
+curl -s -XPOST 'http://localhost:8080/createItem?name=build-job' -u : --data-binary @build-job.xml -H "Jenkins-Crumb:868fcce6b2a8fcd2e76b3bb0cd25861ff501893009579f11bdf550916b366712" -H "Content-Type:text/xml"
+
+/usr/share/logstash/bin/logstash-plugin list
+nohup /usr/share/logstash/bin/logstash -e "input { http { host => "0.0.0.0" port => 31311  } } output { stdout { codec => rubydebug} }"
+
+curl -XPUT 'http://127.0.0.1:31311/twitter/tweet/2' -d 'hello2'
+
+curl -H "content-type: application/json" -XPUT 'http://127.0.0.1:31311/jenkin-builds/' -d '{
+"user": "thenewpne",
+"run_date": "2022-02-26T15:15:15",
+"message": "This is a test",
+"durationString": "xxxx",
+"absoluteUrl": "xxxxxx",
+"startTimeInMillis": "12345",
+"startTime": "xxxxx",
+"BUILD_TAG": "xxxx"
+}'
+
+cd /etc/logstash
+
 #####################################
 node -v
 #####################################

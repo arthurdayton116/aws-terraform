@@ -93,8 +93,8 @@ resource "aws_instance" "web" {
   }
 
   provisioner "file" {
-    source      = "files/jenkins-01.conf"
-    destination = "~/jenkins-01.conf"
+    source      = "files/logstash.conf"
+    destination = "~/logstash.conf"
 
     connection {
       type        = "ssh"

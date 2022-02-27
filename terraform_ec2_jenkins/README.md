@@ -1,0 +1,94 @@
+## Process to setup Jenkins Server with ELK stack
+
+1. Run ``` terraform apply ``` in terraform_ec2_jenkins_vpc
+1. Run ``` terraform apply ``` in terraform_ec2_jenkins
+
+### Terraform output will produce links and commands
+
+![Terraform Output](doc/TerraformOutput.png)
+
+Wait about 5 minutes after successful Terraform Apply for installs to complete.
+
+Then - Logon with public_ssh_link (aws security group rules should be scoped to local machine)
+
+Get jenkins initial admin password with jenkins_admin_pw.
+
+### Setup Jenkins
+
+![Jenkins Admin Password](doc/JenkinsAdminPassword.png)
+
+![Jenkins Default Plugins](doc/JenkinsDefaultPlugins.png)
+
+### Confirm Logstash working
+While you wait confirm logstash is running by clicking kibana_link
+
+![Kibana](doc/Kibana.png)
+
+Confirm sample logstash file setup worked by creating index
+
+![Stack Management](doc/StackManagement.png)
+![Logstash Index](doc/LogstashIndex.png)
+
+Go to discover and confirm data exists
+
+![Discover(doc/Discover.png)
+![Discover Results](doc/DiscoverResults.png)
+
+
+### Create Jenkins admin user
+
+![Jenkins Create Admin User](doc/JenkinsCreateAdminUser.png)
+
+### Install HTTP Request plugin
+
+![Manage Jenkins](doc/ManageJenkins.png)
+
+![HTTP Request Plugin](doc/HTTPRequestPlugin.png)
+
+### Create and Run pipeline using Jenkinsfile
+
+/files/Jenkinsfile
+
+![Pipeline Setup](doc/PipelineSetup.png)
+
+![Pipeline Job](doc/BuildJob.png)
+
+![Run Build](doc/RunBuild.png)
+
+### Troubleshooting
+
+See if logstash running ```curl http://localhost:9600```
+
+Logstash logfiles ```cd /var/log/logstash```
+
+Logstash input config files ```cd /etc/logstash/conf.d```
+
+Logstash Install ```cd /usr/share/logstash```
+
+Logstash Restart ```sudo service logstash restart```
+
+vi /usr/share/logstash/Gemfile.lock 
+search - /sinatra - should be 2.1
+
+Logstash reinstall 
+
+```
+sudo apt-get remove logstash
+
+sudo apt-get install logstash
+```
+
+Logstash http endpoint test message 
+
+```
+curl -H "content-type: application/json" -XPUT 'http://127.0.0.1:31311/jenkin-builds/' -d '{
+"user": "thenewpne",
+"run_date": "2022-02-26T15:15:15",
+"message": "This is a test",
+"durationString": "xxxx",
+"absoluteUrl": "xxxxxx",
+"startTimeInMillis": "12345",
+"startTime": "xxxxx",
+"BUILD_TAG": "xxxx"
+}'
+```

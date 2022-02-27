@@ -1,0 +1,124 @@
+import java.time.*;
+import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZoneId;
+
+// https://opensource.triology.de/jenkins/pipeline-syntax/globals
+// one way to get start time
+def startMill =  Long.parseLong("${currentBuild.startTimeInMillis}")
+def startDateTime = Instant.ofEpochMilli(startMill).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
+def startDateTimeStarter = Instant.ofEpochMilli(startMill-1).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
+def endDateTimeStarter = Instant.ofEpochMilli(0).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
+def startDate = Instant.ofEpochMilli(startMill).atZone(ZoneId.of('America/Los_Angeles')).toLocalDate();
+
+def logstashURL = """http://localhost:31311/jenkin-builds/"""
+def buidID = "${BUILD_ID}"
+// another way to get start time
+def ld = Jenkins.getInstance().getItemByFullName("${JOB_NAME}").getBuildByNumber( buidID.toInteger()).getTime()
+
+pipeline {
+
+    agent any
+
+    stages {
+
+      stage('Start') {
+        steps {
+
+            script{
+            def endMill =  Long.parseLong("${currentBuild.startTimeInMillis}") + Long.parseLong("${currentBuild.duration}")
+            def endDateTime = Instant.ofEpochMilli(endMill).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
+
+            def startMsg = """{
+            "user": "jenkins",
+            "run_date_time": "${startDate}",
+            "message": "STARTED - this came from pipeline",
+            "durationString": "${currentBuild.durationString}",
+            "absoluteUrl": "${currentBuild.absoluteUrl}",
+            "startTimeInMillis": "${currentBuild.startTimeInMillis}",
+            "build_start_time": "${startDateTimeStarter}",
+            "build_end_time": "${endDateTimeStarter}",
+            "build_duration_seconds": "0",
+            "BUILD_TAG": "${BUILD_TAG}"
+            }"""
+
+            echo "startMsg - ${startMsg}"
+
+            def response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'PUT',
+            requestBody: startMsg,
+            url: logstashURL
+
+            echo "${env.BUILD_URL} has result succeeded"
+            }
+
+        }
+      }
+
+
+      stage('Stress Me Out') {
+        steps {
+          sh 'stress --cpu  32 --timeout 300'
+        }
+      }
+
+    }
+
+    post {
+
+        success {
+            script{
+            def durationSec =  Long.parseLong("${currentBuild.duration}")/1000
+            def endMill =  Long.parseLong("${currentBuild.startTimeInMillis}") + Long.parseLong("${currentBuild.duration}")
+            def endDateTime = Instant.ofEpochMilli(endMill).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
+
+            def successMsg = """{
+            "user": "jenkins",
+            "run_date_time": "${startDate}",
+            "message": "SUCCESS - this came from pipeline",
+            "durationString": "${currentBuild.durationString}",
+            "absoluteUrl": "${currentBuild.absoluteUrl}",
+            "startTimeInMillis": "${currentBuild.startTimeInMillis}",
+            "build_start_time": "${startDateTime}",
+            "build_end_time": "${endDateTime}",
+            "build_duration_seconds": "${durationSec}",
+            "BUILD_TAG": "${BUILD_TAG}"
+            }"""
+
+            echo "successMsg - ${successMsg}"
+
+            def response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'PUT',
+            requestBody: successMsg,
+            url: logstashURL
+
+            echo "${env.BUILD_URL} has result succeeded"
+            }
+        }
+        failure {
+            script {
+            def durationSec =  Long.parseLong("${currentBuild.duration}")/1000
+            def endMill =  Long.parseLong("${currentBuild.startTimeInMillis}") + Long.parseLong("${currentBuild.duration}")
+            def endDateTime = Instant.ofEpochMilli(endMill).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
+
+            def failureMsg = """{
+            "user": "jenkins",
+            "run_date_time": "${startDate}",
+            "message": "FAILURE - this came from pipeline",
+            "durationString": "${currentBuild.durationString}",
+            "absoluteUrl": "${currentBuild.absoluteUrl}",
+            "startTimeInMillis": "${currentBuild.startTimeInMillis}",
+            "build_start_time": "${startDateTime}",
+            "build_end_time": "${endDateTime}",
+            "build_duration_seconds": "${durationSec}",
+            "BUILD_TAG": "${BUILD_TAG}"
+            }"""
+
+            def response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'PUT',
+            requestBody: failureMsg,
+            url: logstashURL
+
+            echo "failureMsg - ${failureMsg}"
+            echo "${env.BUILD_URL} has result fail"
+            }
+        }
+    }
+}
