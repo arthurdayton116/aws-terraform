@@ -93,8 +93,32 @@ resource "aws_instance" "web" {
   }
 
   provisioner "file" {
-    source      = "files/logstash.conf"
-    destination = "~/logstash.conf"
+    source      = "files/http.conf"
+    destination = "~/http.conf"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("~/.ssh/id_rsa_ec2")
+      host        = self.public_dns
+    }
+  }
+
+  provisioner "file" {
+    source      = "files/beats.conf"
+    destination = "~/beats.conf"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("~/.ssh/id_rsa_ec2")
+      host        = self.public_dns
+    }
+  }
+
+  provisioner "file" {
+    source      = "files/pipelines.yml"
+    destination = "~/pipelines.yml"
 
     connection {
       type        = "ssh"

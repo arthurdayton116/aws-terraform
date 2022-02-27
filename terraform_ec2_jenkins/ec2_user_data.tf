@@ -121,7 +121,12 @@ variable "user_data" {
                   ##### File Example
                   sudo cp /home/ubuntu/apache-01.conf /etc/logstash/conf.d/apache-01.conf
                   ##### Setup for http input plugin so I can send messages to logstash endpoint
-                  sudo cp /home/ubuntu/logstash.conf /etc/logstash/conf.d/logstash.conf
+                  sudo cp /home/ubuntu/http.conf /etc/logstash/conf.d/http.conf
+
+                  sudo cp /home/ubuntu/beats.conf /etc/logstash/conf.d/beats.conf
+
+                  sudo mv /etc/logstash/pipelines.yml /etc/logstash/pipelines.yml.OLD
+                  sudo cp /home/ubuntu/pipelines.yml /etc/logstash/pipelines.yml
 
                   #### Bug fix - https://github.com/elastic/logstash/issues/13777 - plugin install faceplants logstash because of bad upstream dependency
                   # sudo sed --in-place "s/gem.add_runtime_dependency \"sinatra\", '~> 2'/gem.add_runtime_dependency \"sinatra\", '~> 2.1.0'/g" /usr/share/logstash/logstash-core/logstash-core.gemspec

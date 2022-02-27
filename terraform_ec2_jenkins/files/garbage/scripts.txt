@@ -146,7 +146,7 @@ yarn build
 #####################################
 ls
 
-/var/lib/jenkins/jobs/*/builds/*/log
+/var/lib/jenkins/jobs/*/builds/*/logvi lo
 
 filebeat.inputs:
 - type: log
@@ -160,6 +160,20 @@ filebeat.inputs:
   fields:
     type: jenkins-server
   fields_under_root: true
+
+
+  <queueId>2</queueId>
+  <timestamp>1645976415363</timestamp>
+  <startTime>1645976415368</startTime>
+  <result>SUCCESS</result>
+  <duration>309702</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <execution class="org.jenkinsci.plugins.workflow.cps.CpsFlowExecution">
+    <result>SUCCESS</result>
+
+
+
 
 
   input { file { path => "/home/ubuntu/apache-daily-access.log" start_position => "beginning" sincedb_path => "/dev/null" } } filter { grok { match => { "message" => "%{COMBINEDAPACHELOG}" } } date { match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ] } geoip { source => "clientip" } } output { elasticsearch { hosts => ["localhost:9200"] } }

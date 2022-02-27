@@ -88,11 +88,22 @@ See if logstash running ```curl http://localhost:9600```
 
 Logstash logfiles ```cd /var/log/logstash```
 
+Logstash logfiles ```tail -f -n 50 /var/log/logstash/logstash-plain.log```
+
 Logstash input config files ```cd /etc/logstash/conf.d```
 
 Logstash Install ```cd /usr/share/logstash```
 
-Logstash Restart ```sudo service logstash restart```
+Logstash Restart 
+
+```
+sudo service logstash start
+
+ps aux | grep [l]ogstash
+
+kill -9 
+
+```
 
 vi /usr/share/logstash/Gemfile.lock 
 search - /sinatra - should be 2.1
