@@ -56,8 +56,10 @@ resource "aws_instance" "web" {
     }
   }
 
+  ####### Logstash Files ##########
+  ## VVVVVVVVVVVVVVVVVVVVVVVVVVV ##
   provisioner "file" {
-    source      = "files/apache-01.conf"
+    source      = "files/logstash/apache-01.conf"
     destination = "~/apache-01.conf"
 
     connection {
@@ -69,7 +71,7 @@ resource "aws_instance" "web" {
   }
 
   provisioner "file" {
-    source      = "files/apache-daily-access.log"
+    source      = "files/logstash/apache-daily-access.log"
     destination = "~/apache-daily-access.log"
 
     connection {
@@ -81,19 +83,7 @@ resource "aws_instance" "web" {
   }
 
   provisioner "file" {
-    source      = "files/filebeat.yml"
-    destination = "~/filebeat.yml"
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file("~/.ssh/id_rsa_ec2")
-      host        = self.public_dns
-    }
-  }
-
-  provisioner "file" {
-    source      = "files/http.conf"
+    source      = "files/logstash/http.conf"
     destination = "~/http.conf"
 
     connection {
@@ -105,8 +95,8 @@ resource "aws_instance" "web" {
   }
 
   provisioner "file" {
-    source      = "files/beats.conf"
-    destination = "~/beats.conf"
+    source      = "files/logstash/jenkins_build.conf"
+    destination = "~/jenkins_build_log.conf"
 
     connection {
       type        = "ssh"
@@ -117,7 +107,7 @@ resource "aws_instance" "web" {
   }
 
   provisioner "file" {
-    source      = "files/pipelines.yml"
+    source      = "files/logstash/pipelines.yml"
     destination = "~/pipelines.yml"
 
     connection {
@@ -127,6 +117,22 @@ resource "aws_instance" "web" {
       host        = self.public_dns
     }
   }
+  ### ^^^^^^^^^^^^^^^^^^^^^^^^^ ###
+
+  ####### Filebeat Files ##########
+  ## VVVVVVVVVVVVVVVVVVVVVVVVVVV ##
+  provisioner "file" {
+    source      = "files/filebeat/filebeat.yml"
+    destination = "~/filebeat.yml"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("~/.ssh/id_rsa_ec2")
+      host        = self.public_dns
+    }
+  }
+  ### ^^^^^^^^^^^^^^^^^^^^^^^^^ ###
 
   tags = merge(
     local.base_tags,

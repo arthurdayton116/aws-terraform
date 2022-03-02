@@ -123,7 +123,7 @@ variable "user_data" {
                   ##### Setup for http input plugin so I can send messages to logstash endpoint
                   sudo cp /home/ubuntu/http.conf /etc/logstash/conf.d/http.conf
 
-                  sudo cp /home/ubuntu/beats.conf /etc/logstash/conf.d/beats.conf
+                  sudo cp /home/ubuntu/jenkins_build.conf /etc/logstash/conf.d/jenkins_build.conf
 
                   sudo mv /etc/logstash/pipelines.yml /etc/logstash/pipelines.yml.OLD
                   sudo cp /home/ubuntu/pipelines.yml /etc/logstash/pipelines.yml
@@ -138,6 +138,7 @@ variable "user_data" {
                   sudo systemctl enable filebeat
                   sudo systemctl start filebeat
                   sudo systemctl status filebeat
+                  sudo mkdir /etc/filebeat/inputs
 
                   #### This can be used to create index
                   # curl -X PUT "http://localhost:9200/jenkins?pretty"

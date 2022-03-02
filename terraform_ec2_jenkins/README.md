@@ -101,7 +101,19 @@ sudo service logstash start
 
 ps aux | grep [l]ogstash
 
+ps aux | grep [f]ilebeat
+
+/usr/share/filebeat/bin/filebeat run -c /etc/filebeat/filebeat.yml
+
+/usr/share/filebeat/bin/filebeat test config -c /etc/filebeat/filebeat.yml
+
+tail -f -n 50 /var/log/filebeat/filebeat.log
+
+sudo /usr/share/logstash/bin/logstash --config.test_and_exit -f /etc/logstash
+
 kill -9 
+
+tail -f -n 50 /var/log/jenkins/jenkins.log
 
 ```
 

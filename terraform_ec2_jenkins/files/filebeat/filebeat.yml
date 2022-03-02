@@ -1,0 +1,25 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/lib/jenkins/jobs/build-job/builds/*/log
+    tags: ["JENKINS_LOG"]
+  - type: log
+    enabled: true
+    paths:
+      - /var/lib/jenkins/jobs/build-job/builds/*/build.xml
+    multiline.pattern: ^<flow-build
+    multiline.negate: true
+    multiline.match: after
+    tags: ["JENKINS_XML"]
+processors:
+  - add_cloud_metadata: ~
+output.logstash:
+  hosts: ["localhost:5044"]
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat
+  keepfiles: 7
+  permissions: 0644

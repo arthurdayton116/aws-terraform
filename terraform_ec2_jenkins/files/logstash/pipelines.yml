@@ -2,5 +2,5 @@
   path.config: "/etc/logstash/conf.d/apache-01.conf"
 - pipeline.id: http
   path.config: "/etc/logstash/conf.d/http.conf"
-- pipeline.id: beats
-  path.config: "/etc/logstash/conf.d/beats.conf"
+- pipeline.id: jenkins_build
+  path.config: "/etc/logstash/conf.d/jenkins_build.conf"
