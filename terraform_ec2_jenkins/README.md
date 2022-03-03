@@ -23,21 +23,12 @@ Get jenkins initial admin password with jenkins_admin_pw.
 While you wait confirm logstash is running by clicking kibana_link
 
 ![Kibana](doc/Kibana.png)
-
-Confirm sample logstash file setup worked by creating index
-
-![Stack Management](doc/StackManagement.png)
-![Logstash Index](doc/LogstashIndex.png)
-
-Should create these 3 index patterns
-
-![Index Patterns](doc/indexPatterns.png)
+Import the export.ndjson file and confirm indexes have been created
+![Imported Objects](doc/importedObjects.png)
 
 Go to discover and confirm data exists
 
-![Discover(doc/Discover.png)
 ![Discover Results](doc/DiscoverResults.png)
-
 
 ### Create Jenkins admin user
 
@@ -57,9 +48,9 @@ Go to discover and confirm data exists
 
 ![Pipeline Job](doc/BuildJob.png)
 
-### Import Report Canvas To Kibana
+### Confirm Import of Report Canvas To Kibana
 
-![Import Dashboard](doc/importDashboardCanvas.png)
+
 
 Set auto refresh
 

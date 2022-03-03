@@ -96,7 +96,7 @@ resource "aws_instance" "web" {
 
   provisioner "file" {
     source      = "files/logstash/jenkins_build.conf"
-    destination = "~/jenkins_build_log.conf"
+    destination = "~/jenkins_build.conf"
 
     connection {
       type        = "ssh"
