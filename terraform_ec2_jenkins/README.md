@@ -133,3 +133,33 @@ curl -H "content-type: application/json" -XPUT 'http://127.0.0.1:31311/jenkin-bu
 "BUILD_TAG": "xxxx"
 }'
 ```
+
+### Elastic SQL Snippets
+
+```
+POST _sql?format=txt
+{
+  "query": """
+  SELECT status_msg FROM "jenkins*" where tags not in ('_grok_parse_failure')
+  """
+}
+
+PUT dummy
+
+curl -XPOST "http://localhost:9200/_search" -d'
+  {
+_sql?format=json
+{
+  "query": """
+  SELECT parsed_json.run_status, status_message, parsed_json.build_start_time,parsed_json.build_end_time, parsed_json.build_duration_seconds FROM "jenkins*" where parsed_json.build_start_time is not null 
+  """
+}
+  }'
+
+POST _sql?format=json
+{
+  "query": """
+  SHOW COLUMNS from "jenkins*"
+  """
+}
+```

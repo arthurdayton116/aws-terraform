@@ -16,7 +16,8 @@ def logstashURL = """http://localhost:31311/jenkin-builds/"""
 def buidID = "${BUILD_ID}"
 // another way to get start time
 def ld = Jenkins.getInstance().getItemByFullName("${JOB_NAME}").getBuildByNumber( buidID.toInteger()).getTime()
-
+def verCode = UUID.randomUUID().toString()
+def verCode2 = UUID.randomUUID().toString()
 pipeline {
 
 agent any
@@ -30,11 +31,11 @@ script{
 def endMill =  Long.parseLong("${currentBuild.startTimeInMillis}") + Long.parseLong("${currentBuild.duration}")
 def endDateTime = Instant.ofEpochMilli(endMill).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
 
-def statusMsg = """{"run_status": "STARTED", "user": "jenkins", "run_date_time": "${startDate}","message": "STARTED - this came from pipeline", "durationString": "${currentBuild.durationString}", "absoluteUrl": "${currentBuild.absoluteUrl}", "startTimeInMillis": "${startMillStarter}", "build_start_time": "${startDateTimeStarter}","build_end_time": "${endDateTimeStarter}", "build_duration_seconds": "0", "BUILD_TAG": "${BUILD_TAG}"}"""
+def statusMsg1 = """{"uuid": "${verCode}", "buildID": "${currentBuild.id}", "run_status": "STARTED", "user": "jenkins", "run_date_time": "${startDate}","message": "STARTED - this came from pipeline", "durationString": "${currentBuild.durationString}", "absoluteUrl": "${currentBuild.absoluteUrl}", "startTimeInMillis": "${startMillStarter}", "build_start_time": "${startDateTimeStarter}","build_end_time": "${endDateTimeStarter}", "build_duration_seconds": "0", "BUILD_TAG": "${BUILD_TAG}"}"""
 
-echo "[statusMsg=${statusMsg}]"
+echo "[statusMsg=${statusMsg1}]"
 def response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'PUT',
-requestBody: statusMsg,
+requestBody: statusMsg1,
 url: logstashURL
 
 echo "${env.BUILD_URL} has result succeeded"
@@ -60,12 +61,12 @@ def durationSec =  Long.parseLong("${currentBuild.duration}")/1000
 def endMill =  Long.parseLong("${currentBuild.startTimeInMillis}") + Long.parseLong("${currentBuild.duration}")
 def endDateTime = Instant.ofEpochMilli(endMill).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
 
-def statusMsg = """{"run_status": "SUCCESS","user": "jenkins","run_date_time": "${startDate}","message": "SUCCESS - this came from pipeline","durationString": "${currentBuild.durationString}","absoluteUrl": "${currentBuild.absoluteUrl}","startTimeInMillis": "${currentBuild.startTimeInMillis}","build_start_time": "${startDateTime}","build_end_time": "${endDateTime}","build_duration_seconds": "${durationSec}","BUILD_TAG": "${BUILD_TAG}"}"""
+def statusMsg2 = """{"uuid": "${verCode2}", "buildID": "${currentBuild.id}", "run_status": "SUCCESS","user": "jenkins","run_date_time": "${startDate}","message": "SUCCESS - this came from pipeline","durationString": "${currentBuild.durationString}","absoluteUrl": "${currentBuild.absoluteUrl}","startTimeInMillis": "${currentBuild.startTimeInMillis}","build_start_time": "${startDateTime}","build_end_time": "${endDateTime}","build_duration_seconds": "${durationSec}","BUILD_TAG": "${BUILD_TAG}"}"""
 
-echo "[statusMsg=${statusMsg}]"
+echo "[statusMsg=${statusMsg2}]"
 
 def response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'PUT',
-requestBody: statusMsg,
+requestBody: statusMsg2,
 url: logstashURL
 
 echo "${env.BUILD_URL} has result succeeded"
@@ -77,12 +78,12 @@ def durationSec =  Long.parseLong("${currentBuild.duration}")/1000
 def endMill =  Long.parseLong("${currentBuild.startTimeInMillis}") + Long.parseLong("${currentBuild.duration}")
 def endDateTime = Instant.ofEpochMilli(endMill).atZone(ZoneId.of('America/Los_Angeles')).toLocalDateTime();
 
-def statusMsg = """{"run_status": "FAILED","user": "jenkins","run_date_time": "${startDate}","message": "FAILURE - this came from pipeline","durationString": "${currentBuild.durationString}","absoluteUrl": "${currentBuild.absoluteUrl}","startTimeInMillis": "${currentBuild.startTimeInMillis}","build_start_time": "${startDateTime}","build_end_time": "${endDateTime}","build_duration_seconds": "${durationSec}","BUILD_TAG": "${BUILD_TAG}"}"""
+def statusMsg3 = """{"uuid": "${verCode2}", "buildID": "${currentBuild.id}", "run_status": "FAILED","user": "jenkins","run_date_time": "${startDate}","message": "FAILURE - this came from pipeline","durationString": "${currentBuild.durationString}","absoluteUrl": "${currentBuild.absoluteUrl}","startTimeInMillis": "${currentBuild.startTimeInMillis}","build_start_time": "${startDateTime}","build_end_time": "${endDateTime}","build_duration_seconds": "${durationSec}","BUILD_TAG": "${BUILD_TAG}"}"""
 
-echo "[statusMsg=${statusMsg}]"
+echo "[statusMsg=${statusMsg3}]"
 
 def response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'PUT',
-requestBody: statusMsg,
+requestBody: statusMsg3,
 url: logstashURL
 
 
